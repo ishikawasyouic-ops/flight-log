@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1e66d0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="フライト記録">
+<title>紙飛行機 フライトタイム記録</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>✈ フライトタイム記録</h1>
+</header>
+
+<nav>
+  <button data-tab="timer" class="active">計測</button>
+  <button data-tab="log">記録</button>
+  <button data-tab="stats">集計</button>
+  <button data-tab="planes">機体</button>
+</nav>
+
+<main>
+  <section id="tab-timer" class="tab active">
+    <div id="display" aria-live="off">0:00.00</div>
+    <div class="row">
+      <button id="startStop" class="big go">スタート</button>
+      <button id="reset" class="big sub">リセット</button>
+    </div>
+
+    <form id="form">
+      <label>機体
+        <select id="plane"></select>
+      </label>
+      <div class="grid2">
+        <label>重さ (g)
+          <input id="weight" type="number" step="0.01" inputmode="decimal" placeholder="5.4">
+        </label>
+        <label>場所
+          <input id="place" list="placeList" autocomplete="off">
+          <datalist id="placeList"></datalist>
+        </label>
+      </div>
+      <div class="grid2">
+        <label>天気
+          <select id="weather">
+            <option value=""></option>
+            <option>晴れ</option><option>曇り</option><option>雨</option>
+          </select>
+        </label>
+        <label>風 (m/s)
+          <input id="wind" type="number" step="1" min="0" inputmode="numeric">
+        </label>
+      </div>
+      <label>メモ
+        <textarea id="memo" rows="2" placeholder="調整内容・投げ方など"></textarea>
+      </label>
+      <label>タイム (秒) ※手入力も可
+        <input id="seconds" type="number" step="0.01" inputmode="decimal" required>
+      </label>
+      <button type="submit" class="big save">この記録を保存</button>
+    </form>
+  </section>
+
+  <section id="tab-log" class="tab">
+    <div class="row">
+      <select id="filterPlane"><option value="">すべての機体</option></select>
+    </div>
+    <ul id="list"></ul>
+    <p id="empty" class="muted">まだ記録がありません。</p>
+  </section>
+
+  <section id="tab-planes" class="tab">
+    <form id="planeForm">
+      <label>バージョン
+        <input id="pVersion" required placeholder="例: 空見上げ60S V1.979" autocomplete="off">
+      </label>
+      <div class="grid2">
+        <label>製造年月日
+          <input id="pDate" type="date" required>
+        </label>
+        <label>識別番号
+          <input id="pSerial" required placeholder="例: 001" autocomplete="off">
+        </label>
+      </div>
+      <button type="submit" class="big save">機体を登録</button>
+    </form>
+    <p class="muted">新しい製造年月日・識別番号の順に並びます。</p>
+    <ul id="planeRegList"></ul>
+  </section>
+
+  <section id="tab-stats" class="tab">
+    <div id="stats"></div>
+    <div class="row">
+      <button id="exportCsv" class="sub">CSV出力</button>
+      <button id="exportJson" class="sub">バックアップ</button>
+      <label class="filebtn sub">復元<input id="importJson" type="file" accept="application/json" hidden></label>
+    </div>
+    <p class="muted">データはこの端末のブラウザ内にのみ保存されます。機種変更前にバックアップしてください。</p>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
