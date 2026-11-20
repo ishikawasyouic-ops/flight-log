@@ -76,20 +76,15 @@
 
   <section id="tab-planes" class="tab">
     <form id="planeForm">
-      <label>バージョン
+      <label>機体名
         <input id="pVersion" required placeholder="例: 空見上げ60S V1.979" autocomplete="off">
       </label>
-      <div class="grid2">
-        <label>製造年月日
-          <input id="pDate" type="date" required>
-        </label>
-        <label>識別番号
-          <input id="pSerial" required placeholder="例: 001" autocomplete="off">
-        </label>
-      </div>
+      <label>製造年月日
+        <input id="pDate" type="date" required>
+      </label>
       <button type="submit" class="big save">機体を登録</button>
     </form>
-    <p class="muted">新しい製造年月日・識別番号の順に並びます。</p>
+    <p class="muted">新しい製造年月日の順に並びます。</p>
     <ul id="planeRegList"></ul>
   </section>
 

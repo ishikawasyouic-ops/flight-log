@@ -37,13 +37,13 @@ function savePlanes() {
 }
 
 function planeLabel(p) {
-  return `${p.version} / ${p.date} / ${p.serial}`;
+  return `${p.version} / ${p.date}`;
 }
 
-// Newest manufacture date first, then highest serial number first.
+// Newest manufacture date first, then by name.
 function sortedRegistry() {
   return [...registry].sort((a, b) =>
-    b.date.localeCompare(a.date) || b.serial.localeCompare(a.serial, "ja", { numeric: true }));
+    b.date.localeCompare(a.date) || a.version.localeCompare(b.version, "ja", { numeric: true }));
 }
 
 function fmt(sec) {
@@ -165,16 +165,15 @@ $("planeForm").addEventListener("submit", (e) => {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
     version: $("pVersion").value.trim(),
     date: $("pDate").value,
-    serial: $("pSerial").value.trim(),
   };
-  if (!p.version || !p.date || !p.serial) return;
+  if (!p.version || !p.date) return;
   if (registry.some((r) => planeLabel(r) === planeLabel(p))) {
     alert("同じ機体がすでに登録されています。");
     return;
   }
   registry.push(p);
   savePlanes();
-  $("pSerial").value = "";
+  $("pVersion").value = "";
   refresh();
   $("plane").value = p.id;
 });
@@ -282,7 +281,7 @@ $("importJson").addEventListener("change", async (e) => {
     const data = Array.isArray(raw) ? raw : raw.records;
     const planeData = Array.isArray(raw) ? [] : raw.planes || [];
     if (!Array.isArray(data) || !data.every((r) => r && typeof r.seconds === "number" && r.at && r.id)) throw new Error();
-    if (!Array.isArray(planeData) || !planeData.every((p) => p && p.id && p.version && p.date && p.serial)) throw new Error();
+    if (!Array.isArray(planeData) || !planeData.every((p) => p && p.id && p.version && p.date)) throw new Error();
     if (!confirm(`記録${data.length}件、機体${planeData.length}件を読み込みます。既存のデータとマージします。`)) return;
     const ids = new Set(records.map((r) => r.id));
     data.forEach((r) => { if (!ids.has(r.id)) records.push(r); });
